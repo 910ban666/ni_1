@@ -23,13 +23,13 @@
             <li v-for="item in displayed" :key="item.id">
                 <div class="row-top">
                 <p class="talk-text">{{ item.title }}</p>
-                <button class="fav-btn" :class="{on: item.fav}" :title="item.fav ? '取消收藏' : '收藏'" @click="likeTookStore.toggleFav(item.id)">♥</button>
+                <button class="fav-btn" :class="{on: item.fav}" :title="item.fav ? '取消收藏' : '收藏'" @click="onFav(item)">♥</button>
                 </div>
                 <div class="row-bottom">
                 <p class="talk-author">{{ item.author }}</p>
                 <div class="row-actions">
                     <button class="link-btn" @click="copy(item)">复制</button>
-                    <button class="link-btn danger" @click="likeTookStore.removeOne(item.id)">删除</button>
+                    <button class="link-btn danger" @click="onRemove(item)">删除</button>
                 </div>
                 </div>
             </li>
@@ -39,6 +39,24 @@
         </ul>
     </div>
     </div>
+
+    <!-- 定制复古风格确认弹窗 -->
+    <div v-if="showClearModal" class="modal-mask" @click.self="showClearModal = false">
+        <div class="modal-card">
+            <p class="modal-mark" aria-hidden="true">◇ 清 ◆ 空 ◇</p>
+            <h3 class="modal-title">当真挥毫作罢？</h3>
+            <p class="modal-desc">将把全部 <b>{{ likeTookStore.likeList.length }}</b> 条名言一并抹去，不复留存。</p>
+            <div class="modal-actions">
+                <button class="modal-btn ghost" @click="showClearModal = false">留住</button>
+                <button class="modal-btn solid" @click="doClear">清空</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 轻量提示 toast -->
+    <Transition name="toast">
+        <div v-if="toast" class="toast">{{ toast }}</div>
+    </Transition>
 </template>
 
 <script setup lang="ts" name="LikeTook">
@@ -59,20 +77,47 @@
         localStorage.setItem(LIKE_KEY, JSON.stringify(state.likeList))
     })
 
+    // 轻量 toast 提示
+    const toast = ref('')
+    let toastTimer: ReturnType<typeof setTimeout> | null = null
+    function showToast(msg: string) {
+        toast.value = msg
+        if (toastTimer) clearTimeout(toastTimer)
+        toastTimer = setTimeout(() => (toast.value = ''), 1800)
+    }
+
     function getLoveTalk() {
         likeTookStore.getATalk()
+        if (likeTookStore.errorMsg === '') showToast('已采撷一句')
+    }
+
+    function onFav(item: TalkItem) {
+        likeTookStore.toggleFav(item.id)
+        showToast(item.fav ? '已收藏 ♥' : '已取消收藏')
+    }
+
+    function onRemove(item: TalkItem) {
+        likeTookStore.removeOne(item.id)
+        showToast('已删除')
     }
 
     async function copy(item: TalkItem) {
         try {
             await navigator.clipboard.writeText(item.title + ' —— ' + item.author)
-            // 极简反馈：可换 toast，此处用按钮文字闪一下
+            showToast('已复制')
         } catch {
-            /* 忽略剪贴板权限异常 */
+            showToast('复制失败')
         }
     }
 
+    // 定制确认弹窗
+    const showClearModal = ref(false)
     function onClear() {
-        if (confirm('确定清空全部名言吗？')) likeTookStore.clearAll()
+        showClearModal.value = true
+    }
+    function doClear() {
+        likeTookStore.clearAll()
+        showClearModal.value = false
+        showToast('已清空')
     }
 </script>

@@ -488,4 +488,132 @@
       transition: none;
     }
   }
+
+  /* ---------- 定制复古确认弹窗 ---------- */
+  .modal-mask {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--page-pad);
+    background: rgba(43, 39, 33, 0.45);
+    backdrop-filter: blur(2px);
+  }
+
+  .modal-card {
+    width: 100%;
+    max-width: 340px;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--seal);
+    box-shadow: 0 18px 44px rgba(43, 39, 33, 0.35);
+    padding: clamp(22px, 6vw, 32px);
+    text-align: center;
+    animation: modal-pop 0.18s ease-out;
+  }
+
+  @keyframes modal-pop {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .modal-mark {
+    margin: 0 0 10px;
+    font-family: var(--deco);
+    letter-spacing: 6px;
+    color: var(--seal);
+    font-size: 0.8rem;
+  }
+
+  .modal-title {
+    margin: 0 0 8px;
+    font-family: var(--serif);
+    font-size: 1.35rem;
+    color: var(--ink);
+    letter-spacing: 2px;
+  }
+
+  .modal-desc {
+    margin: 0 0 20px;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+
+  .modal-desc b {
+    color: var(--seal);
+  }
+
+  .modal-actions {
+    display: flex;
+    gap: 10px;
+  }
+
+  .modal-btn {
+    flex: 1;
+    padding: 9px 0;
+    border: 1px solid var(--ink);
+    background: transparent;
+    font-family: var(--serif);
+    font-size: 0.95rem;
+    letter-spacing: 3px;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .modal-btn.ghost {
+    color: var(--ink);
+  }
+
+  .modal-btn.ghost:hover {
+    background: #e6dcc2;
+  }
+
+  .modal-btn.solid {
+    background: var(--seal);
+    border-color: var(--seal);
+    color: var(--paper);
+  }
+
+  .modal-btn.solid:hover {
+    background: #98381f;
+  }
+
+  /* ---------- 轻量 toast 提示 ---------- */
+  .toast {
+    position: fixed;
+    left: 50%;
+    bottom: clamp(18px, 5vh, 40px);
+    transform: translateX(-50%);
+    z-index: 200;
+    max-width: 82vw;
+    padding: 9px 18px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--sans);
+    font-size: 0.86rem;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 18px rgba(43, 39, 33, 0.3);
+    border-radius: 2px;
+  }
+
+  .toast-enter-active,
+  .toast-leave-active {
+    transition: opacity 0.25s ease, transform 0.25s ease;
+  }
+
+  .toast-enter-from,
+  .toast-leave-to {
+    opacity: 0;
+    transform: translateX(-50%) translateY(10px);
+  }
 </style>
