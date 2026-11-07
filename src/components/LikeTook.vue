@@ -6,7 +6,10 @@
     </button>
     <p v-if="likeTookStore.errorMsg" class="error">{{ likeTookStore.errorMsg }}</p>
     <ul>
-            <li v-for="item in likeTookStore.likeList" :key="item.id">{{ item.title }}</li>
+            <li v-for="item in likeTookStore.likeList" :key="item.id">
+                <p class="talk-text">{{ item.title }}</p>
+                <p class="talk-author">{{ item.author }}</p>
+            </li>
             <li v-if="likeTookStore.likeList.length === 0" class="empty">还没有名言，点上面的按钮摘一句吧 ✦</li>
         </ul>
     </div>

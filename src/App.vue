@@ -293,15 +293,33 @@
   li {
     padding: clamp(11px, 2.6vw, 14px) 0;
     border-bottom: 1px dashed var(--line);
+  }
+
+  li:last-child {
+    border-bottom: none;
+  }
+
+  .talk-text {
+    margin: 0;
     font-family: var(--deco);
-    font-size: clamp(0.95rem, 2.8vw, 1.05rem);
+    font-size: clamp(1rem, 3vw, 1.1rem);
+    line-height: 1.7;
     color: var(--ink);
     text-align: left;
     overflow-wrap: anywhere;
   }
 
-  li:last-child {
-    border-bottom: none;
+  .talk-author {
+    margin: 6px 0 0;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    color: var(--seal);
+    text-align: right;
+  }
+
+  .talk-author::before {
+    content: '—— ';
+    letter-spacing: 0.5px;
   }
 
   li.empty {

@@ -9,6 +9,7 @@ export const LIKE_KEY = 'likeTalkList'
 interface TalkItem {
     id: string
     title: string
+    author: string // 作者/出处
 }
 
 // 启动时安全地从 localStorage 读取，损坏或非法时回退空数组
@@ -38,7 +39,9 @@ export const useLikeTook = defineStore('talk', () => {
             const {data} = await axios.get('https://v1.hitokoto.cn/?encode=json&charset=utf-8')
             const title = data?.hitokoto?.trim()
             if (!title) throw new Error('没有获取到内容')
-            likeList.unshift({id, title})
+            // 组合作者/出处：优先 from_who，其次 from
+            const author = [data?.from_who, data?.from].filter(Boolean).join(' · ') || '佚名'
+            likeList.unshift({id, title, author})
         } catch (error: any) {
             console.warn('获取失败', error)
             errorMsg.value = '获取失败：' + (error?.message || '未知错误') + '，请稍后再试'
