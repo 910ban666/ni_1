@@ -35,11 +35,8 @@ export const useLikeTook = defineStore('talk', () => {
         errorMsg.value = ''
         let id = nanoid()
         try {
-            const {data} = await axios.get(
-                'https://route.showapi.com/1839-1?appKey=686b44f52d5f436FBDc485Ed1130C73E'
-            )
-            const list = data?.showapi_res_body?.contentlist
-            const title = Array.isArray(list) && list[0] ? list[0].content : ''
+            const {data} = await axios.get('https://v1.hitokoto.cn/?encode=json&charset=utf-8')
+            const title = data?.hitokoto?.trim()
             if (!title) throw new Error('没有获取到内容')
             likeList.unshift({id, title})
         } catch (error: any) {
