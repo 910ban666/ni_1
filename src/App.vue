@@ -290,6 +290,23 @@
     padding: 0;
   }
 
+  /* 列表固定在限定高度内滚动，避免无限下拉变长 */
+  .talk-scroll {
+    max-height: clamp(300px, 46vh, 440px);
+    overflow-y: auto;
+    padding-right: 4px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--line) transparent;
+  }
+
+  .talk-scroll::-webkit-scrollbar {
+    width: 6px;
+  }
+  .talk-scroll::-webkit-scrollbar-thumb {
+    background: var(--line);
+    border-radius: 3px;
+  }
+
   li {
     padding: clamp(11px, 2.6vw, 14px) 0;
     border-bottom: 1px dashed var(--line);
@@ -299,8 +316,15 @@
     border-bottom: none;
   }
 
+  .row-top {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
   .talk-text {
     margin: 0;
+    flex: 1;
     font-family: var(--deco);
     font-size: clamp(1rem, 3vw, 1.1rem);
     line-height: 1.7;
@@ -309,17 +333,77 @@
     overflow-wrap: anywhere;
   }
 
+  .row-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 6px;
+  }
+
   .talk-author {
-    margin: 6px 0 0;
+    margin: 0;
     font-family: var(--sans);
     font-size: 0.82rem;
-    color: var(--seal);
-    text-align: right;
+    color: var(--ink-soft);
+    text-align: left;
   }
 
   .talk-author::before {
     content: '—— ';
     letter-spacing: 0.5px;
+  }
+
+  .row-actions {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+  }
+
+  /* 收藏心形按钮 */
+  .fav-btn {
+    flex-shrink: 0;
+    width: 30px;
+    height: 30px;
+    border: none;
+    background: transparent;
+    font-size: 1.15rem;
+    line-height: 1;
+    color: var(--ink-faint);
+    cursor: pointer;
+    transition: transform 0.06s ease, color 0.18s ease;
+  }
+
+  .fav-btn:hover {
+    color: var(--seal);
+    transform: scale(1.12);
+  }
+
+  .fav-btn.on {
+    color: var(--seal);
+  }
+
+  /* 细线文字按钮：复制 / 删除 / 清空 */
+  .link-btn {
+    border: none;
+    background: none;
+    padding: 0;
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--line);
+  }
+
+  .link-btn:hover {
+    color: var(--ink);
+    text-decoration-color: var(--seal);
+  }
+
+  .link-btn.danger:hover {
+    color: var(--seal);
   }
 
   li.empty {
@@ -329,6 +413,60 @@
     text-align: center;
     padding: 16px 0;
     border-bottom: none;
+  }
+
+  /* ---------- 名言工具栏：tab + 条数 + 清空 ---------- */
+  .talk-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: clamp(10px, 2vw, 14px);
+  }
+
+  .talk-tabs {
+    display: flex;
+    gap: 2px;
+  }
+
+  .tab {
+    border: 1px solid var(--line);
+    background: transparent;
+    color: var(--ink-soft);
+    padding: 5px 14px;
+    margin: 0;
+    border-radius: 3px;
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+
+  .tab + .tab {
+    border-left: none;
+  }
+
+  .tab b {
+    color: var(--seal);
+    font-weight: 700;
+  }
+
+  .tab.on {
+    background: var(--ink);
+    border-color: var(--ink);
+    color: var(--paper);
+  }
+
+  .talk-meta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .count-note {
+    font-family: var(--sans);
+    font-size: 0.8rem;
+    color: var(--ink-faint);
   }
 
   /* ---------- 焦点可访问性 ---------- */
